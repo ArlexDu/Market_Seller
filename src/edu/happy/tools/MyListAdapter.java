@@ -9,17 +9,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import edu.happy.mynfcapp.R;
+import edu.happy.supermarket.R;
 
 public class MyListAdapter extends BaseAdapter {
 	
-	private ArrayList<ApplicationInfo> ListItems;
+	private ArrayList<Goods> ListItems;
 	
 	private Context context;
 	
 	private LayoutInflater listcontainer;
 	
-	public MyListAdapter(Context con,ArrayList<ApplicationInfo> list) {
+	public MyListAdapter(Context con,ArrayList<Goods> list) {
 		// TODO Auto-generated constructor stub
 		this.context = con;
 		ListItems = list;
@@ -53,21 +53,24 @@ public class MyListAdapter extends BaseAdapter {
 		if(convertView == null){
 			convertView = listcontainer.inflate(R.layout.applist_layout, null);
 			holder = new ViewHolder();
-			holder.appIcon =(ImageView) convertView.findViewById(R.id.app_icon);
-			holder.appName=(TextView) convertView.findViewById(R.id.app_name);
+			holder.goodsIcon =(ImageView) convertView.findViewById(R.id.good_icon);
+			holder.goodsName=(TextView) convertView.findViewById(R.id.good_name);
+			holder.goodsNum=(TextView) convertView.findViewById(R.id.good_number);
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 		}
-		holder.appIcon.setBackground((ListItems.get(position).getAppIcon()));
-		holder.appName.setText(ListItems.get(position).getAppName().toString());
+	//	holder.goodsIcon.setBackground((ListItems.get(position).getAppIcon()));
+		holder.goodsName.setText(ListItems.get(position).getName().toString());
+		holder.goodsNum.setText(String.valueOf(ListItems.get(position).getNum()));
 		return convertView;
 	}
 	
 	
 	public class ViewHolder{
-		public ImageView appIcon;
-		public TextView appName;
+		public ImageView goodsIcon;
+		public TextView goodsName;
+		public TextView goodsNum;
 	}
 
 }

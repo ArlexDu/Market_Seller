@@ -7,7 +7,7 @@
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="请选择一个想要自动打开的应用程序"
+        android:text="当前各种商品销售情况"
         android:gravity="center"
         android:background="#fffe03"
         />    
@@ -16,7 +16,6 @@
         android:id="@+id/applist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_below="@id/text"
@@ -26,6 +25,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        />
+    <TextView 
+        android:id="@+id/no_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前没有该商品的销售数据"
+        android:textSize="23sp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
         />
 
 </RelativeLayout>

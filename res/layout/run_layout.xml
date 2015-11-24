@@ -24,7 +24,7 @@
         />
 
     <ImageView
-        android:id="@+id/button_select_app"
+        android:id="@+id/button_lookgoods"
         android:layout_width="100dp"
         android:layout_height="200dp"
         android:layout_marginTop="15dp"

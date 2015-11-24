@@ -4,7 +4,7 @@
     android:layout_height="70dp" >
 
     <ImageView
-        android:id="@+id/app_icon"
+        android:id="@+id/good_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="20dp"
@@ -13,13 +13,23 @@
          />
 
     <TextView
-        android:id="@+id/app_name"
+        android:id="@+id/good_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_toRightOf="@+id/app_icon"
+        android:layout_toRightOf="@+id/good_icon"
         android:layout_centerVertical="true"
-        android:text="Application's name"
+        android:text="milk"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+     <TextView
+        android:id="@+id/good_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="number"
+        android:layout_marginRight="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
