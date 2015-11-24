@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/notice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/showinformation"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/nfc_notice" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        />
+
+    <ImageView
+        android:id="@+id/button_select_app"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"
+        android:background="@drawable/application" />
+    <ImageView
+        android:id="@+id/button_select_uri"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentRight="true"
+        android:onClick="onClick"
+        android:background="@drawable/text" />
+
+    <TextView
+        android:id="@+id/showinformation"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:textSize="16sp"
+        android:textStyle="bold" 
+        android:gravity="center"/>
+
+</RelativeLayout>
