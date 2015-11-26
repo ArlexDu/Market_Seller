@@ -13,29 +13,38 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import edu.happy.tools.ReadInformation;
-import edu.happy.tools.ReadUriRecord;
 import edu.happy.tools.DataBaseControl;
+import edu.happy.tools.ParseNdefMessage;
 import edu.happy.tools.ReadAndWriteTextRecord;
 
 public class RunWindow extends Activity {
 	
 	private ImageView select; //用于选择的按钮
 	private ImageView writeUri;//用于跳入写入界面写入Uri
+	private ImageView notice;
 	private String mdata;//存储程序包的名字
 	private NfcAdapter mNfcAdapter;
 	private AlertDialog mDialog;
 	private PendingIntent mPendingIntent;
 	private int method;//表示当前的功能
 	private TextView showinformation;//用于展示nfc标签的内容
+	private ReadAndWriteTextRecord textRecord;
+	private LinearLayout info_layout;
 	private ProgressBar bar;
+	private LayoutInflater inflater;
+	private View show_info;
+	private TextView show_title;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -45,9 +54,13 @@ public class RunWindow extends Activity {
 		firstuse();
 		select = (ImageView)findViewById(R.id.button_lookgoods);
 		writeUri = (ImageView) findViewById(R.id.button_select_uri);
+		notice = (ImageView) findViewById(R.id.notice);
 		showinformation = (TextView) findViewById(R.id.showinformation);
-		bar = (ProgressBar)findViewById(R.id.progressBar);
 		mNfcAdapter =NfcAdapter.getDefaultAdapter(this);
+		info_layout = (LinearLayout)findViewById(R.id.show_infor);
+		bar = (ProgressBar)findViewById(R.id.progressBar);
+		show_title = (TextView) findViewById(R.id.show_title);
+		inflater = LayoutInflater.from(this);
 	    mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
 
 	        //没有nfc硬件服务
@@ -104,29 +117,9 @@ public class RunWindow extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		String temp ;
 		switch (requestCode){
-		//应用程序的选择
-		case 0:
-			temp = data.getStringExtra("package_name").toString();
-			mdata = temp.substring(temp.indexOf("\n")+1);
-			String name = data.getStringExtra("appname");
-			System.out.println("mpackageName is "+ name);
-			showinformation.setText(name);
-			method = 0;
-			nodata();
-			break;
-		//网页的写入
 		case 1:
-			if(resultCode == 0){//处理网页
-				temp = data.getStringExtra("Uri").toString();
-				mdata = "http://"+temp; 
-				System.out.println("Uri is "+ mdata);
-				showinformation.setText(mdata);
-				method = 1;
-				nodata();
-				break;	
-			}else if(resultCode == 1){//处理文本
+		   if(resultCode == 1){//处理文本
 				mdata = data.getStringExtra("text").toString();
 				System.out.println("text is "+ mdata);
 				showinformation.setText(mdata);
@@ -179,9 +172,6 @@ public class RunWindow extends Activity {
             if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
             //	System.out.println("进入判断");
             	Ndef ndef = Ndef.get(tag);
-                ReadInformation information = new ReadInformation();
-                information.setTextType(ndef.getType()+"\n");
-                information.setMaxsize(ndef.getMaxSize()+"\n");
                 Parcelable[] rawMgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
                 NdefMessage msg[] = null;
                 int contentSize = 0;
@@ -198,32 +188,27 @@ public class RunWindow extends Activity {
                 	if(msg !=null){
                 		//一般情况下只有一个ndefmessage和ndefrecord
                 		NdefRecord record = msg[0].getRecords()[0];
-                		boolean istext = false;
                 		//第一判断内容是否是已知类型，包括RTD_text和RTD_uri
                 		if(record.getTnf() == NdefRecord.TNF_WELL_KNOWN){
-                			//解析已知uri格式
-                			ReadUriRecord urirecord = new ReadUriRecord();
-                			String uri = urirecord.ParseWellKnowUri(record);
-                			if(uri == null){
-                				istext = true;
-                			}else{
-                				information.setData(uri);
-                				System.out.println("Type is uri ");	
+                			if(textRecord == null){
+                				textRecord = new ReadAndWriteTextRecord(record);
                 			}
-                	
-                			if (istext){//解析text格式
-                				ReadAndWriteTextRecord textRecord = new ReadAndWriteTextRecord(record);
-                        		information.setData(textRecord.getText()+"\n");
-                        		System.out.println("Type is text ");
-                			}
-                			
-                		}else if(record.getTnf() == NdefRecord.TNF_ABSOLUTE_URI){//解析绝对uri格式
-                			ReadUriRecord urirecord = new ReadUriRecord();
-            				String uri =urirecord.ParseAbsoluteUri(record);
-            				information.setData(uri);
-            				System.out.println("Type is aburi ");
+                			bar.setVisibility(View.VISIBLE);
+                			new Thread(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									ParseNdefMessage message = textRecord.getInformation();
+									System.out.println("获得新的组件！");
+									show_info = message.getView(RunWindow.this, inflater, info_layout, 0);
+									Message msg = Message.obtain();
+									msg.what = 0;
+									// 发送这个消息到消息队列中
+									myHander.sendMessage(msg);
+								}
+							}).start();
                 		}
-                		showinformation.setText(information.getTextType()+information.getMaxsize()+information.getData());
                 	}
                 	
                 }catch(Exception e){
@@ -291,5 +276,18 @@ public class RunWindow extends Activity {
 		showinformation.setText("");
 		mdata = null;
 	}
+	
+    Handler myHander = new Handler(){
+		
+		public void handleMessage(Message msg) {
+			if(msg.what == 0){
+				bar.setVisibility(View.INVISIBLE);
+				notice.setVisibility(View.INVISIBLE);
+				show_title.setVisibility(View.VISIBLE);
+				info_layout.addView(show_info);
+			}
+			
+		};
+	};
 }
 

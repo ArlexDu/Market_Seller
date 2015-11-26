@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
      >
     
     <TextView 
@@ -9,28 +10,224 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
-        android:text="您可以输入一个网址或者任何字符串"
+        android:text="建立新的商品信息"
         android:textSize="20sp"
         android:background="#fe8301"
         android:gravity="center"
         />
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:id="@+id/bianhao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="商品编号:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
     
     <EditText
-        android:id="@+id/input_text"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/title"
-        android:hint="@string/urihint"
+        android:id="@+id/newgood_id"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:background="#ffffff"
+        android:text="7733057006"
+        android:layout_marginLeft="30dp"
         />
+        
+        
+    </LinearLayout>
+    
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="商品名称:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="丹麦香草威化饼干" />
+        
+    </LinearLayout>
+    
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="商品类别:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="食品" />
+        
+    </LinearLayout>
+    
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="生产日期:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_pro_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="2014/10/29" />
+    </LinearLayout>
+    
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="失效日期:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_expirytime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="2016/01/29" />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="生产地点:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="印尼" />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="价格:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="23" />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="营养价值:"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/newgood_nutrition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="30dp"
+        android:background="#ffffff"
+        android:text="19.90" />
+    </LinearLayout>
     
     <Button 
         android:id="@+id/done"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/input_text"
         android:text="@string/ok"
         android:onClick="onClick"
         />
 
-</RelativeLayout>
+
+</LinearLayout>

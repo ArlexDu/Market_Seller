@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent" >
 
     <ImageView
         android:id="@+id/notice"
@@ -11,43 +10,59 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/showinformation"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/nfc_notice" />
+        android:src="@drawable/nfc_notice"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/button_lookgoods"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/application"
+        android:onClick="onClick" />
+
+    <ImageView
+        android:id="@+id/button_select_uri"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/text"
+        android:onClick="onClick" />
+    
+    <TextView 
+        android:id="@+id/show_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="销售商品清单"
+        android:visibility="invisible"
+        android:textSize="18sp"
+        android:layout_below="@+id/button_lookgoods"
+        android:layout_centerHorizontal="true"
+         />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/show_title" >
+
+        <LinearLayout
+            android:id="@+id/show_infor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
         android:visibility="invisible"
-        />
-
-    <ImageView
-        android:id="@+id/button_lookgoods"
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClick"
-        android:background="@drawable/application" />
-    <ImageView
-        android:id="@+id/button_select_uri"
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentRight="true"
-        android:onClick="onClick"
-        android:background="@drawable/text" />
-
-    <TextView
-        android:id="@+id/showinformation"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:textSize="16sp"
-        android:textStyle="bold" 
-        android:gravity="center"/>
+         />
 
 </RelativeLayout>

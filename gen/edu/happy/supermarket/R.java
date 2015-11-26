@@ -30,32 +30,50 @@ public final class R {
         public static final int text=0x7f020005;
     }
     public static final class id {
-        public static final int Time=0x7f090008;
-        public static final int action_settings=0x7f090012;
-        public static final int applist=0x7f09000f;
-        public static final int button_lookgoods=0x7f09000c;
-        public static final int button_select_uri=0x7f09000d;
-        public static final int done=0x7f090002;
-        public static final int good_icon=0x7f090003;
-        public static final int good_name=0x7f090004;
-        public static final int good_number=0x7f090005;
-        public static final int input_text=0x7f090001;
-        public static final int list_bar=0x7f090010;
-        public static final int no_information=0x7f090011;
-        public static final int notice=0x7f090009;
-        public static final int number=0x7f090007;
-        public static final int price=0x7f090006;
-        public static final int progressBar=0x7f09000b;
-        public static final int showinformation=0x7f09000a;
-        public static final int text=0x7f09000e;
+        public static final int Time=0x7f090010;
+        public static final int action_settings=0x7f090023;
+        public static final int applist=0x7f090020;
+        public static final int bianhao=0x7f090001;
+        public static final int button_lookgoods=0x7f090019;
+        public static final int button_select_uri=0x7f09001a;
+        public static final int dete_good_name=0x7f090013;
+        public static final int dete_good_number=0x7f090014;
+        public static final int dete_good_price=0x7f090015;
+        public static final int dete_good_time=0x7f090016;
+        public static final int detect_good_pic=0x7f090012;
+        public static final int done=0x7f09000a;
+        public static final int good_icon=0x7f09000b;
+        public static final int good_name=0x7f09000c;
+        public static final int good_number=0x7f09000d;
+        public static final int list_bar=0x7f090021;
+        public static final int newgood_class=0x7f090004;
+        public static final int newgood_expirytime=0x7f090006;
+        public static final int newgood_id=0x7f090002;
+        public static final int newgood_name=0x7f090003;
+        public static final int newgood_nutrition=0x7f090009;
+        public static final int newgood_place=0x7f090007;
+        public static final int newgood_price=0x7f090008;
+        public static final int newgood_pro_time=0x7f090005;
+        public static final int no_information=0x7f090022;
+        public static final int notice=0x7f090017;
+        public static final int number=0x7f09000f;
+        public static final int price=0x7f09000e;
+        public static final int progressBar=0x7f09001e;
+        public static final int scrollView1=0x7f09001c;
+        public static final int show_infor=0x7f09001d;
+        public static final int show_sale_goods=0x7f090011;
+        public static final int show_title=0x7f09001b;
+        public static final int showinformation=0x7f090018;
+        public static final int text=0x7f09001f;
         public static final int title=0x7f090000;
     }
     public static final class layout {
         public static final int activity_write=0x7f030000;
         public static final int applist_layout=0x7f030001;
         public static final int detail_layout=0x7f030002;
-        public static final int run_layout=0x7f030003;
-        public static final int select_app_list=0x7f030004;
+        public static final int detect_goods=0x7f030003;
+        public static final int run_layout=0x7f030004;
+        public static final int select_app_list=0x7f030005;
     }
     public static final class menu {
         public static final int detial_info_list=0x7f080000;

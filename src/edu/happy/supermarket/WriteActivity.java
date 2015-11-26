@@ -1,30 +1,32 @@
 package edu.happy.supermarket;
 
-import java.nio.charset.Charset;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard.Key;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class WriteActivity extends Activity {
 
-	private EditText input_text;
+	private EditText id_text,name_text,class_text,protime_tex,expirytime_text,place_text,price_text,nutrition_text;
 	private Button ok;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_write);
-		input_text = (EditText) findViewById(R.id.input_text);
+		id_text = (EditText) findViewById(R.id.newgood_id);
+		name_text = (EditText) findViewById(R.id.newgood_name);
+		class_text = (EditText) findViewById(R.id.newgood_class);
+		protime_tex = (EditText) findViewById(R.id.newgood_pro_time);
+		expirytime_text = (EditText) findViewById(R.id.newgood_expirytime);
+		place_text = (EditText) findViewById(R.id.newgood_place);
+		price_text = (EditText) findViewById(R.id.newgood_price);
+		nutrition_text = (EditText) findViewById(R.id.newgood_nutrition);
 		ok = (Button) findViewById(R.id.done);
 	}
 	
@@ -33,48 +35,17 @@ public class WriteActivity extends Activity {
 		 switch(v.getId()){
 	        case R.id.done:
 	        	Intent intent = new Intent();
-	        	String text = input_text.getText().toString();
-	        	if(IsUrl(text)){
-	        		//System.out.println("is uri");
-	        		intent.putExtra("Uri", text);
-					setResult(0,intent);
-					finish();
-					break;	
-	        	}else{
-	        		//System.out.println("is text");
-	        		intent.putExtra("text", text);
-					setResult(1,intent);
-					finish();
-					break;	
+	        	String text = id_text.getText().toString()+"#"+name_text.getText().toString()+"#"+
+	        			class_text.getText().toString()+"#"+protime_tex.getText().toString()+"#"+
+	        			expirytime_text.getText().toString()+"#"+place_text.getText().toString()+"#"+
+	        			price_text.getText().toString()+"#"+nutrition_text.getText().toString();
+	        	System.out.println("input text is "+text);
+	        	intent.putExtra("text", text);
+				setResult(1,intent);
+				finish();
+				break;	
 	        	}
-			}
-      }
-	//用于区分当前输入内容是否是url格式
-	private boolean IsUrl(String s){
-//		先判断是否包含中文 
-		if(isContainsChinese(s)){
-			 return false;
-		}else{
-			 Pattern p = Pattern.compile("^(http|www|ftp|)?(://)?(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*((:\\d+)?)"
-				 		+ "(/(\\w+(-\\w+)*))*(\\.?(\\w)*)(\\?)?(((\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)"
-				 		+ "*(\\w*-)*(\\w*=)*(\\w*%)*(\\w*\\?)*(\\w*:)*(\\w*\\+)*(\\w*\\.)*(\\w*&)*(\\w*-)*(\\w*=)*)*(\\w*)*)$",
-				 		Pattern.CASE_INSENSITIVE );   
-			 Matcher matcher =p.matcher(s);
-			 boolean is = matcher.matches();
-			 return  is;
 		}
-	}
-	
-	//是否包含中文 
-	public static boolean isContainsChinese(String str){
-         String reg = "[\u4e00-\u9fa5]";
-         Pattern pat = Pattern.compile(reg);
-	     Matcher matcher = pat.matcher(str);
-	     if (matcher.find())    {
-	           return true;
-	     }
-	     return false;
-	}
 	
 	//重写返回键，避免返回空指针错误
 	@Override
