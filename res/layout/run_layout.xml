@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/showinformation"
+        android:layout_below="@+id/button_lookgoods"
         android:layout_centerHorizontal="true"
         android:src="@drawable/nfc_notice"
         android:visibility="visible" />

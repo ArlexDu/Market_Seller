@@ -38,7 +38,6 @@ public class RunWindow extends Activity {
 	private AlertDialog mDialog;
 	private PendingIntent mPendingIntent;
 	private int method;//表示当前的功能
-	private TextView showinformation;//用于展示nfc标签的内容
 	private ReadAndWriteTextRecord textRecord;
 	private LinearLayout info_layout;
 	private ProgressBar bar;
@@ -55,7 +54,6 @@ public class RunWindow extends Activity {
 		select = (ImageView)findViewById(R.id.button_lookgoods);
 		writeUri = (ImageView) findViewById(R.id.button_select_uri);
 		notice = (ImageView) findViewById(R.id.notice);
-		showinformation = (TextView) findViewById(R.id.showinformation);
 		mNfcAdapter =NfcAdapter.getDefaultAdapter(this);
 		info_layout = (LinearLayout)findViewById(R.id.show_infor);
 		bar = (ProgressBar)findViewById(R.id.progressBar);
@@ -122,7 +120,6 @@ public class RunWindow extends Activity {
 		   if(resultCode == 1){//处理文本
 				mdata = data.getStringExtra("text").toString();
 				System.out.println("text is "+ mdata);
-				showinformation.setText(mdata);
 				method = 2;
 				nodata();
 				break;	
@@ -273,7 +270,6 @@ public class RunWindow extends Activity {
 			Toast.makeText(this, "未知错误！", Toast.LENGTH_LONG).show();
 		}
 //		写入之后把要写入的信息去掉
-		showinformation.setText("");
 		mdata = null;
 	}
 	
