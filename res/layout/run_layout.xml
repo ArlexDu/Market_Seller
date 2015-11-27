@@ -29,7 +29,7 @@
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/function_button"
+        android:layout_above="@+id/select_button"
         android:layout_below="@+id/show_title"
          >
 
