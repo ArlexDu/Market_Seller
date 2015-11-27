@@ -1,8 +1,11 @@
 package edu.happy.tools;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +63,16 @@ public class MyListAdapter extends BaseAdapter {
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 		}
-	//	holder.goodsIcon.setBackground((ListItems.get(position).getAppIcon()));
+		String filepath = context.getFilesDir()+"/GoodIcon/"+ListItems.get(position).getId().toString();
+		System.out.println("file path is "+ filepath);
+		File file = new File(filepath);
+		Bitmap goodicon;
+		if(file.exists()){
+			goodicon = BitmapFactory.decodeFile(filepath);
+		}else{
+			goodicon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+		}
+		holder.goodsIcon.setImageBitmap(goodicon);
 		holder.goodsName.setText(ListItems.get(position).getName().toString());
 		holder.goodsNum.setText(String.valueOf(ListItems.get(position).getNum()));
 		return convertView;

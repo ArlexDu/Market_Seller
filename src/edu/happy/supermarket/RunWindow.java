@@ -1,10 +1,15 @@
 package edu.happy.supermarket;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -25,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.happy.tools.DataBaseControl;
+import edu.happy.tools.FileTools;
 import edu.happy.tools.ParseNdefMessage;
 import edu.happy.tools.ReadAndWriteTextRecord;
 
@@ -44,6 +50,7 @@ public class RunWindow extends Activity {
 	private LayoutInflater inflater;
 	private View show_info;
 	private TextView show_title;
+	private String id,name; //用于记录写入操作返回的id和name
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -69,15 +76,27 @@ public class RunWindow extends Activity {
 		
 		mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,getClass()), 0);
 	}
+	
 	//仅第一次登陆才会打开数据库建立
 	private void firstuse(){
 		SharedPreferences preferences = getSharedPreferences("first", Activity.MODE_PRIVATE);
 		int first = preferences.getInt("open", 0);
-//		System.out.println("open ："+first);
-		//第一次登陆
+		System.out.println("open ："+first);
+		//第一次登陆  
 		if(first == 0){
+			//创建数据库
 			DataBaseControl control = new DataBaseControl(this);
 			control.CloseDataBase();
+//			创建image文件夹,设定默认商品图片
+			File appFile = this.getFilesDir();
+			String imagefile = "GoodIcon";
+			File image = new File(appFile,imagefile);
+			try {
+				image.mkdir();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		SharedPreferences.Editor editor = preferences.edit();
 		first++;
@@ -119,6 +138,8 @@ public class RunWindow extends Activity {
 		case 1:
 		   if(resultCode == 1){//处理文本
 				mdata = data.getStringExtra("text").toString();
+				id = data.getStringExtra("id").toString();
+				name = data.getStringExtra("name").toString();
 				System.out.println("text is "+ mdata);
 				method = 2;
 				nodata();
@@ -197,7 +218,7 @@ public class RunWindow extends Activity {
 								public void run() {
 									// TODO Auto-generated method stub
 									ParseNdefMessage message = textRecord.getInformation();
-									System.out.println("获得新的组件！");
+//									System.out.println("获得新的组件！");
 									show_info = message.getView(RunWindow.this, inflater, info_layout, 0);
 									Message msg = Message.obtain();
 									msg.what = 0;
@@ -240,6 +261,7 @@ public class RunWindow extends Activity {
 	private void WriteMessage(NdefMessage message,Tag tag){
 		int size = message.toByteArray().length;
 		Ndef ndef = Ndef.get(tag);
+		DataBaseControl data = new DataBaseControl(this);
 		try{
 			if(ndef!=null){
 				ndef.connect();
@@ -251,6 +273,8 @@ public class RunWindow extends Activity {
 					Toast.makeText(this, "这个NFC标签容量不够！", Toast.LENGTH_LONG).show();
 				}
 				ndef.writeNdefMessage(message);
+				data.add_Whole_Data(id,name);//添加到数据库
+				data.CloseDataBase();
 				Toast.makeText(this, "成功写入！", Toast.LENGTH_LONG).show();
 			}else{//格式化标签变为ndef格式
 //				tag描述nfc标签里面的基本信息和nfc标签的格式没有什么关系
@@ -259,11 +283,13 @@ public class RunWindow extends Activity {
 					format.connect();
 					//格式化的同时也完成了写入的操作
 					format.format(message);
+					data.add_Whole_Data(id,name);//添加到数据库
+					data.CloseDataBase();
 					Toast.makeText(this, "成功写入！", Toast.LENGTH_LONG).show();	
 				}else{
 					Toast.makeText(this, "该标签无法格式化为ndef格式！", Toast.LENGTH_LONG).show();	
 				}
-				
+				id = name = null;
 			}
 		}catch(Exception e){
 			e.printStackTrace();

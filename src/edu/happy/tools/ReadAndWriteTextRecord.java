@@ -1,5 +1,6 @@
 package edu.happy.tools;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,10 +10,13 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.nfc.NdefRecord;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import edu.happy.supermarket.R;
 /*
@@ -107,9 +111,20 @@ public class ReadAndWriteTextRecord {
 				TextView good_number = (TextView)contentView.findViewById(R.id.dete_good_number);
 				TextView good_price = (TextView)contentView.findViewById(R.id.dete_good_price);
 				TextView good_time = (TextView)contentView.findViewById(R.id.dete_good_time);
+				ImageView good_icon = (ImageView)contentView.findViewById(R.id.detect_good_pic);
+				String filepath = activity.getFilesDir()+"/GoodIcon/"+id;
+				System.out.println("file path is "+ filepath);
+				File file = new File(filepath);
+				Bitmap goodicon;
+				if(file.exists()){
+					goodicon = BitmapFactory.decodeFile(filepath);
+				}else{
+					goodicon = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_launcher);
+				}
+				good_icon.setImageBitmap(goodicon);
 				good_name.setText(name);
 				good_number.setText("1");
-				good_price.setText("价格是："+price);
+				good_price.setText("价格："+price);
 				  //Date或者String转化为时间戳
 			    SimpleDateFormat format =  new SimpleDateFormat("yyyy/MM/dd");
 			    Date date;
@@ -122,7 +137,7 @@ public class ReadAndWriteTextRecord {
 						deadline="这个商品已经过期!";
 						good_time.setText(deadline);
 					}else{
-						good_time.setText("过期日期是："+deadline);
+						good_time.setText("过期日期："+deadline);
 					}
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block

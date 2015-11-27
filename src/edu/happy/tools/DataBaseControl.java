@@ -16,6 +16,7 @@ public class DataBaseControl {
 	private DBHelper dbhelper;
 	private SQLiteDatabase database;
 	private static String INSERT_DETIAL="INSERT INTO Detail_info VALUES(?,?,?,?,?)";
+	private static String INSERT_WHOLE="INSERT INTO Whole_info VALUES(?,?,?)";
 	private long time;
 	//用于一次消费记录当前的的所有消费商品
 	private class Buygoods{
@@ -52,6 +53,18 @@ public class DataBaseControl {
 			goodslist.add(nbg);	
 			add_Detail_Data(good);
 		}//不是本次结算新的的话就在结算结束后向已有的数据库条目中更新数量
+	}
+	
+	public void add_Whole_Data(String id,String name){
+		database.beginTransaction();
+		try{
+			database.execSQL(INSERT_WHOLE,new Object[]{id,name,0});
+			database.setTransactionSuccessful();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+            database.endTransaction();			
+		}
 	}
 	//新增细节表
 	private void add_Detail_Data(Goods good){
