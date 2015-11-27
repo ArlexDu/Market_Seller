@@ -24,6 +24,9 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -36,8 +39,7 @@ import edu.happy.tools.ReadAndWriteTextRecord;
 
 public class RunWindow extends Activity {
 	
-	private ImageView select; //用于选择的按钮
-	private ImageView writeUri;//用于跳入写入界面写入Uri
+	private ImageView select,cancel,overview,add,black; //用于选择的按钮
 	private ImageView notice;
 	private String mdata;//存储程序包的名字
 	private NfcAdapter mNfcAdapter;
@@ -58,8 +60,11 @@ public class RunWindow extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.run_layout);
 		firstuse();
-		select = (ImageView)findViewById(R.id.button_lookgoods);
-		writeUri = (ImageView) findViewById(R.id.button_select_uri);
+		select = (ImageView)findViewById(R.id.select_button);
+		cancel = (ImageView)findViewById(R.id.cancel_button);
+		black = (ImageView)findViewById(R.id.black);
+		add = (ImageView) findViewById(R.id.add);
+		overview =(ImageView)findViewById(R.id.overview);
 		notice = (ImageView) findViewById(R.id.notice);
 		mNfcAdapter =NfcAdapter.getDefaultAdapter(this);
 		info_layout = (LinearLayout)findViewById(R.id.show_infor);
@@ -116,20 +121,130 @@ public class RunWindow extends Activity {
 	public void onClick(View v){
 		Intent intent;
 		switch(v.getId()){
+		//进入选择模式
+		case R.id.select_button:
+			chooseFunction();
+			break;
+		case R.id.cancel_button:
+			cancelSelect();
+			break;
 //		查看卖出商品统计信息
-		case R.id.button_lookgoods:
+		case R.id.overview:
 			intent = new Intent(RunWindow.this,AllGoodsInfoListActivity.class);
 			startActivity(intent);
+			initanim();
 			break;
 //		写入uri的按钮
-		case R.id.button_select_uri:
+		case R.id.add:
 			intent = new Intent(RunWindow.this,WriteActivity.class);
 			startActivityForResult(intent, 1);
+			initanim();
 			break;
 		}
 		
 	}
+	 //初始化界面
+	 public void initanim(){
+				cancel.clearAnimation();
+				cancel.invalidate();
+				black.clearAnimation();
+				black.invalidate();
+				black.setVisibility(View.GONE);
+				overview.setVisibility(View.GONE);
+				add.setVisibility(View.GONE);
+				cancel.setVisibility(View.INVISIBLE);
+				select.setVisibility(View.VISIBLE);
+			}
+	 //选择操作的弹框
+	 private void chooseFunction(){
+				black.setVisibility(View.VISIBLE);
+				select.clearAnimation();
+				select.invalidate();
+				select.setVisibility(View.INVISIBLE);
+				cancel.setVisibility(View.VISIBLE);
+				cancel.bringToFront();
+			    Animation rotateanimation=AnimationUtils.loadAnimation(RunWindow.this, R.anim.select_rotate);
+				rotateanimation.setFillAfter(true);
+				cancel.startAnimation(rotateanimation);
+				rotateanimation.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation arg0) {
+						// TODO Auto-generated method stub
+						overview.setVisibility(View.VISIBLE);
+						add.setVisibility(View.VISIBLE);
+					}
+				});
+				
+			}
 	
+	//取消选择的动画
+	public void cancelSelect(){
+		cancel.clearAnimation();
+		cancel.invalidate();
+		overview.setVisibility(View.GONE);
+		add.setVisibility(View.GONE);
+		cancel.setVisibility(View.INVISIBLE);
+		select.setVisibility(View.VISIBLE);
+		select.bringToFront();
+		Animation rotateanimation=AnimationUtils.loadAnimation(RunWindow.this, R.anim.cancel_rotate);
+		rotateanimation.setFillAfter(true);
+		rotateanimation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				// TODO Auto-generated method stub	
+			    Animation animation=AnimationUtils.loadAnimation(RunWindow.this, R.anim.black_cancel);
+//				animation.setFillAfter(true);
+				black.startAnimation(animation);
+				animation.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation arg0) {
+						// TODO Auto-generated method stub
+						black.setVisibility(View.GONE);
+					}
+				});
+			}
+		});
+		select.startAnimation(rotateanimation);
+	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -138,19 +253,16 @@ public class RunWindow extends Activity {
 		case 1:
 		   if(resultCode == 1){//处理文本
 				mdata = data.getStringExtra("text").toString();
-				id = data.getStringExtra("id").toString();
-				name = data.getStringExtra("name").toString();
 				System.out.println("text is "+ mdata);
 				method = 2;
-				nodata();
+				if(mdata.equals("")){
+					mdata = null;
+				}else{
+					id = data.getStringExtra("id").toString();
+					name = data.getStringExtra("name").toString();
+				}
 				break;	
 			}
-		}
-	}
-	
-	private void nodata(){
-		if(mdata.equals("")){
-			mdata = null;
 		}
 	}
 	

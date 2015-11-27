@@ -70,7 +70,7 @@ public class MyListAdapter extends BaseAdapter {
 		if(file.exists()){
 			goodicon = BitmapFactory.decodeFile(filepath);
 		}else{
-			goodicon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+			goodicon = BitmapFactory.decodeResource(context.getResources(), R.drawable.good);
 		}
 		holder.goodsIcon.setImageBitmap(goodicon);
 		holder.goodsName.setText(ListItems.get(position).getName().toString());

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@drawable/background">
 
     <ImageView
         android:id="@+id/notice"
@@ -12,24 +13,6 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/nfc_notice"
         android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/button_lookgoods"
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/application"
-        android:onClick="onClick" />
-
-    <ImageView
-        android:id="@+id/button_select_uri"
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/text"
-        android:onClick="onClick" />
     
     <TextView 
         android:id="@+id/show_title"
@@ -38,7 +21,7 @@
         android:text="销售商品清单"
         android:visibility="invisible"
         android:textSize="18sp"
-        android:layout_below="@+id/button_lookgoods"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
          />
 
@@ -46,7 +29,9 @@
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/show_title" >
+        android:layout_above="@+id/function_button"
+        android:layout_below="@+id/show_title"
+         >
 
         <LinearLayout
             android:id="@+id/show_infor"
@@ -64,5 +49,58 @@
         android:layout_centerInParent="true"
         android:visibility="invisible"
          />
+
+    <ImageView
+        android:id="@+id/select_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/functionbutton"
+        android:layout_marginBottom="2dp"
+        android:onClick="onClick"
+        android:visibility="visible" />
+    
+    <ImageView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:onClick="onClick"
+            android:src="@drawable/functionbutton"
+            android:visibility="invisible" />
+    
+    <ImageView
+       android:id="@+id/black"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:alpha="0.6"
+       android:scaleType="fitXY"
+       android:src="@drawable/black"
+       android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/overview"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/add"
+        android:layout_marginBottom="70dp"
+        android:visibility="gone"
+        android:onClick="onClick"
+        android:src="@drawable/overview" />
+    
+     <ImageView
+        android:id="@+id/add"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/select_button"
+        android:layout_marginBottom="70dp"
+        android:visibility="gone"
+        android:onClick="onClick"
+        android:src="@drawable/add" />
 
 </RelativeLayout>

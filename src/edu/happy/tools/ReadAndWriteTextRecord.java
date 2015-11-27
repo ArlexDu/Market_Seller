@@ -119,7 +119,7 @@ public class ReadAndWriteTextRecord {
 				if(file.exists()){
 					goodicon = BitmapFactory.decodeFile(filepath);
 				}else{
-					goodicon = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_launcher);
+					goodicon = BitmapFactory.decodeResource(activity.getResources(), R.drawable.good);
 				}
 				good_icon.setImageBitmap(goodicon);
 				good_name.setText(name);
