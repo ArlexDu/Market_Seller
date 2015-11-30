@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -477,5 +478,17 @@ public class RunWindow extends Activity {
 			
 		};
 	};
+	
+	//÷ÿ–¥∑µªÿº¸£¨±‹√‚∑µªÿø’÷∏’Î¥ÌŒÛ
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			// TODO Auto-generated method stub
+			if(keyCode == KeyEvent.KEYCODE_HOME){
+				keyCode = KeyEvent.KEYCODE_BACK;
+				return super.onKeyDown(keyCode, event);	
+			}else{
+				return super.onKeyDown(keyCode, event);	
+			}
+		}
 }
 
