@@ -86,6 +86,7 @@ public class DetialInfoList extends Activity  {
 				intent.putExtra("package_name", "");
 				setResult(0,intent);
 				finish();
+				overridePendingTransition(R.anim.in_form_right, R.anim.to_from_left);
 				return true;
 			}else{
 				return super.onKeyDown(keyCode, event);	

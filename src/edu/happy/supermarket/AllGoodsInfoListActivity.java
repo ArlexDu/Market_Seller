@@ -72,6 +72,7 @@ public class AllGoodsInfoListActivity extends Activity implements OnItemClickLis
 		intent.putExtra("id", list.get(position).getId());
 		intent.putExtra("name",list.get(position).getName());
 		startActivity(intent);
+		overridePendingTransition(R.anim.in_from_left, R.anim.to_from_right);
 	}
 	
 	//÷ÿ–¥∑µªÿº¸£¨±‹√‚∑µªÿø’÷∏’Î¥ÌŒÛ
@@ -83,6 +84,7 @@ public class AllGoodsInfoListActivity extends Activity implements OnItemClickLis
 				intent.putExtra("package_name", "");
 				setResult(0,intent);
 				finish();
+				overridePendingTransition(R.anim.in_form_right, R.anim.to_from_left);
 				return true;
 			}else{
 				return super.onKeyDown(keyCode, event);	

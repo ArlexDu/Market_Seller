@@ -11,7 +11,11 @@ public final class R {
     public static final class anim {
         public static final int black_cancel=0x7f040000;
         public static final int cancel_rotate=0x7f040001;
-        public static final int select_rotate=0x7f040002;
+        public static final int in_form_right=0x7f040002;
+        public static final int in_from_left=0x7f040003;
+        public static final int select_rotate=0x7f040004;
+        public static final int to_from_left=0x7f040005;
+        public static final int to_from_right=0x7f040006;
     }
     public static final class attr {
     }
@@ -28,21 +32,28 @@ public final class R {
     }
     public static final class drawable {
         public static final int add=0x7f020000;
-        public static final int application=0x7f020001;
-        public static final int background=0x7f020002;
-        public static final int black=0x7f020003;
-        public static final int circle=0x7f020004;
-        public static final int dialog=0x7f020005;
-        public static final int done=0x7f020006;
-        public static final int functionbutton=0x7f020007;
-        public static final int good=0x7f020008;
-        public static final int ic_launcher=0x7f020009;
-        public static final int my_dialog=0x7f02000a;
-        public static final int nfc_launcher=0x7f02000b;
-        public static final int nfc_notice=0x7f02000c;
-        public static final int overview=0x7f02000d;
-        public static final int price=0x7f02000e;
-        public static final int text=0x7f02000f;
+        public static final int apple=0x7f020001;
+        public static final int application=0x7f020002;
+        public static final int background=0x7f020003;
+        public static final int black=0x7f020004;
+        public static final int circle=0x7f020005;
+        public static final int danmaicooike=0x7f020006;
+        public static final int dialog=0x7f020007;
+        public static final int done=0x7f020008;
+        public static final int eggs=0x7f020009;
+        public static final int functionbutton=0x7f02000a;
+        public static final int good=0x7f02000b;
+        public static final int ic_launcher=0x7f02000c;
+        public static final int kebike=0x7f02000d;
+        public static final int milk=0x7f02000e;
+        public static final int my_dialog=0x7f02000f;
+        public static final int nfc_launcher=0x7f020010;
+        public static final int nfc_notice=0x7f020011;
+        public static final int overview=0x7f020012;
+        public static final int price=0x7f020013;
+        public static final int selectpic=0x7f020014;
+        public static final int shaqima=0x7f020015;
+        public static final int text=0x7f020016;
     }
     public static final class id {
         public static final int Time=0x7f0a0011;

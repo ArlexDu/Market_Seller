@@ -29,12 +29,12 @@
             
     <ImageView
         android:id="@+id/good_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:onClick="onClick"
-        android:src="@drawable/good" />
+        android:src="@drawable/selectpic" />
 
     <LinearLayout 
         android:orientation="horizontal"
@@ -57,9 +57,8 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="#ffffff"
-        android:text="7733057006"
         android:layout_marginLeft="30dp"
+        android:background="#00000000"
         />
         
         
@@ -86,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="丹麦香草威化饼干" />
+        android:background="#00000000"
+         />
         
     </LinearLayout>
     
@@ -112,8 +111,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="食品" />
+        android:background="#00000000"
+        />
         
     </LinearLayout>
     
@@ -138,8 +137,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="2014/10/29" />
+        android:background="#00000000"
+        />
     </LinearLayout>
     
      <LinearLayout 
@@ -163,8 +162,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="2016/01/29" />
+        android:background="#00000000"
+        />
     </LinearLayout>
     
     <LinearLayout 
@@ -188,8 +187,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="印尼" />
+        android:background="#00000000"
+         />
     </LinearLayout>
     
     <LinearLayout 
@@ -213,8 +212,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="23" />
+        android:background="#00000000"
+         />
     </LinearLayout>
     
     <LinearLayout 
@@ -238,8 +237,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
-        android:background="#ffffff"
-        android:text="19.90" />
+        android:background="#00000000"
+        />
     </LinearLayout>
     
     <Button 

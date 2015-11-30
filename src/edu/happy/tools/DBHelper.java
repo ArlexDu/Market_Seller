@@ -3,11 +3,16 @@ package edu.happy.tools;
 import java.nio.charset.Charset;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import edu.happy.supermarket.R;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+	private Context context;
 	private static String DATABASE_NAME="Goods";
     
 	//detial表记录每次销售的细节信息:商品id ，实时价格,交易时间，交易数量
@@ -19,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ "(id varchar(10) PRIMARY KEY,name VARCHAR(100),number INTEGER)";
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null,1);
+		this.context = context;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -28,18 +34,14 @@ public class DBHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
         db.execSQL(CREATE_Detail_DATABASE);
         db.execSQL(CREATE_Whole_DATABASE);
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000000','milk',30)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000001','cooike',27)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000002','apple',15)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000003','eggs',50)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000004','chicken',2)");
-        String rawp = "35元";
-        String price = new String(rawp.getBytes(), Charset.forName("UTF-8"));
-        db.execSQL("INSERT INTO Detail_info(id,price,time,number) values('1000000004','"+price+"','1448368724829',2)");
-        db.execSQL("INSERT INTO Detail_info(id,price,time,number) values('1000000004','"+price+"','1448368824829',1)");
-        db.execSQL("INSERT INTO Detail_info(id,price,time,number) values('1000000004','"+price+"','1448368924829',3)");
-        db.execSQL("INSERT INTO Detail_info(id,price,time,number) values('1000000004','"+price+"','1448369724829',5)");
-        db.execSQL("INSERT INTO Detail_info(id,price,time,number) values('1000000004','"+price+"','1448366724829',1)");
+        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000000','牛奶',0)");
+        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000001','沙琪玛',0)");
+        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000002','苹果',0)");
+        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000003','鸡蛋',0)");
+        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000004','可比克',0)");
+        db.execSQL("INSERT INTO Whole_info(id,name,number) values('7733057006','丹麦香草威化饼干',0)");
+        //存储图片
+        downloadPic();
 	}
 	
     //数据库更新的时候使用
@@ -53,6 +55,30 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onOpen(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		super.onOpen(db);
+	}
+	
+	private void downloadPic(){
+		FileTools file = new FileTools();
+		Resources res =context.getResources();  
+//	   牛奶
+	    Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.milk);
+	    file.SaveIcon(context, bmp, "1000000000");
+//	   沙琪玛
+	    bmp = BitmapFactory.decodeResource(res, R.drawable.shaqima);
+	    file.SaveIcon(context, bmp, "1000000001");
+//	    苹果
+	    bmp = BitmapFactory.decodeResource(res, R.drawable.apple);
+	    file.SaveIcon(context, bmp, "1000000002");
+//	    鸡蛋
+	    bmp = BitmapFactory.decodeResource(res, R.drawable.eggs);
+	    file.SaveIcon(context, bmp, "1000000003");
+//	    可比克
+	    bmp = BitmapFactory.decodeResource(res, R.drawable.kebike);
+	    file.SaveIcon(context, bmp, "1000000004");
+//	    丹麦香草威化饼干
+	    bmp = BitmapFactory.decodeResource(res, R.drawable.danmaicooike);
+	    file.SaveIcon(context, bmp, "7733057006");
+	    
 	}
 
 }

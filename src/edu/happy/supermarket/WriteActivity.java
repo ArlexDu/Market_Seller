@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -54,15 +56,26 @@ public class WriteActivity extends Activity {
 			    SelectPicAfterKitKat();
 			 break;
 	        case R.id.done://点击ok按钮
-	        	new FileTools().SaveIcon(this, bitmap, id_text.getText().toString());
+	        	if(bitmap!=null){
+	        		new FileTools().SaveIcon(this, bitmap, id_text.getText().toString());	        		
+	        	}
 	        	Intent intent = new Intent();
 	        	String name = name_text.getText().toString();
 	        	String id = id_text.getText().toString();
+	        	if((class_text.getText().toString().equals(""))||(id.equals(""))||(name.equals(""))||(protime_tex.getText().toString().equals(""))||(expirytime_text.getText().toString().equals(""))
+	        			||place_text.getText().toString().equals("")||price_text.getText().toString().equals("")||nutrition_text.getText().toString().equals("")){
+	        		//提示没有填写完全
+//	        		 System.out.println("不完全");
+	        		 Dialog  mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
+	        		 mDialog.setTitle("您填写的信息不完全!");
+	        	     mDialog.show();
+	        	     return;
+	        	}
 	        	String text = id+"#"+name+"#"+
 	        			class_text.getText().toString()+"#"+protime_tex.getText().toString()+"#"+
 	        			expirytime_text.getText().toString()+"#"+place_text.getText().toString()+"#"+
 	        			price_text.getText().toString()+"#"+nutrition_text.getText().toString();
-	        	System.out.println("input text is "+text);
+	//        	System.out.println("input text is "+text);
 	        	intent.putExtra("text", text);
 	        	intent.putExtra("name", name);
 	        	intent.putExtra("id", id);

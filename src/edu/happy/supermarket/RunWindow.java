@@ -94,9 +94,6 @@ public class RunWindow extends Activity {
 		System.out.println("open ："+first);
 		//第一次登陆  
 		if(first == 0){
-			//创建数据库
-			DataBaseControl control = new DataBaseControl(this);
-			control.CloseDataBase();
 //			创建image文件夹,设定默认商品图片
 			File appFile = this.getFilesDir();
 			String imagefile = "GoodIcon";
@@ -107,6 +104,9 @@ public class RunWindow extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//创建数据库
+			DataBaseControl control = new DataBaseControl(this);
+			control.CloseDataBase();
 		}
 		SharedPreferences.Editor editor = preferences.edit();
 		first++;
@@ -137,12 +137,15 @@ public class RunWindow extends Activity {
 		case R.id.overview:
 			intent = new Intent(RunWindow.this,AllGoodsInfoListActivity.class);
 			startActivity(intent);
+//			 overridePendingTransition 方法必须在startActivity()或者 finish()方法的后面。
+			overridePendingTransition(R.anim.in_from_left, R.anim.to_from_right);
 			initanim();
 			break;
 //		写入uri的按钮
 		case R.id.add:
 			intent = new Intent(RunWindow.this,WriteActivity.class);
 			startActivityForResult(intent, 1);
+			overridePendingTransition(R.anim.in_form_right, R.anim.to_from_left);
 			initanim();
 			break;
 //			开始结算
