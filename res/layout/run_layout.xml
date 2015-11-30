@@ -37,7 +37,9 @@
             android:id="@+id/show_infor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:visibility="visible"
+            >
         </LinearLayout>
     </ScrollView>
 
@@ -52,8 +54,8 @@
 
     <ImageView
         android:id="@+id/select_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/functionbutton"
@@ -63,8 +65,8 @@
     
     <ImageView
             android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="2dp"
@@ -102,5 +104,93 @@
         android:visibility="gone"
         android:onClick="onClick"
         android:src="@drawable/add" />
+     
+     <ImageView
+        android:id="@+id/price_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/price"
+        android:layout_marginBottom="2dp"
+        android:onClick="onClick"
+        android:visibility="invisible" />
+     
+     <ImageView
+        android:id="@+id/done_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/done"
+        android:layout_marginBottom="2dp"
+        android:onClick="onClick"
+        android:visibility="invisible" />
+     
+   <RelativeLayout 
+       android:id="@+id/dialog"
+       android:layout_width="150dp"
+       android:layout_height="150dp"
+       android:background="@drawable/dialog"
+       android:visibility="invisible"
+       android:layout_centerHorizontal="true"
+       android:layout_above="@+id/done_button"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="本次一共购买"
+            android:textSize="15sp"
+        ></TextView>
+        <TextView
+            android:id="@+id/dialog_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textColor="#5f52a0"
+            android:textSize="22sp"
+        ></TextView>
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="个"
+            android:textSize="15sp"
+        ></TextView>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一共花费"
+            android:textSize="15sp"
+        ></TextView>
+        <TextView
+            android:id="@+id/dialog_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23"
+            android:textColor="#ff0000"
+            android:textSize="22sp"
+        ></TextView>
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textSize="15sp"
+        ></TextView>
+    </LinearLayout>
+
+</RelativeLayout>
 
 </RelativeLayout>

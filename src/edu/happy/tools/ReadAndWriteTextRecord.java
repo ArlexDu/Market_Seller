@@ -26,11 +26,11 @@ public class ReadAndWriteTextRecord {
 
 	private String mText;
 	private NdefRecord ndefRecord;
-	 
+	private String info; 
 	public ReadAndWriteTextRecord(NdefRecord record) {
 		// TODO Auto-generated constructor stub
 		ndefRecord =record;
-		parseinfromation();
+		info = parseinfromation();
 	}
 	
 	public ReadAndWriteTextRecord(String text){
@@ -73,7 +73,7 @@ public class ReadAndWriteTextRecord {
 			int languageCodeLength = payload[0] & 0x3f;
 			
 			String languageCode = new String(payload,1,languageCodeLength,"US-ASCII");
-            System.out.println("languageCode is "+languageCode);			
+      //      System.out.println("languageCode is "+languageCode);			
 			return new String(payload,languageCodeLength+1,payload.length - languageCodeLength - 1,textEncoding);
 				
 		}catch(Exception e){
@@ -82,14 +82,13 @@ public class ReadAndWriteTextRecord {
 		return null;
 	}
 	
-	public ParseNdefMessage getInformation(){
+	public ParseNdefMessage getInformation(DataBaseControl database){
 		
 		ParseNdefMessage message = new ParseNdefMessage() {
 			
 			@Override
-			public View getView(Activity activity, LayoutInflater inflater, ViewGroup parent, int offset) {
+			public View getView(Activity activity, LayoutInflater inflater, ViewGroup parent, int offset,DataBaseControl database) {
 				// TODO Auto-generated method stub
-				String info = parseinfromation();
 				int[] indexs = new int[7];
 				int current = 0;//用于记录index数组的位置
 				System.out.println("nfc info is "+info);
@@ -101,11 +100,14 @@ public class ReadAndWriteTextRecord {
 						current++;
 					}
 				}
+				Goods good = new Goods();
 				id = info.substring(0,indexs[0]);
 				name = info.substring(indexs[0]+1,indexs[1]);
 				deadline = info.substring(indexs[3]+1, indexs[4]);
 				price = info.substring(indexs[5]+1,indexs[6]);
-				System.out.println(" id is "+id+"\n name is "+name+"\n price is "+price+"\n deadline is "+deadline);
+				good.setId(id);
+				good.setPrice(price);
+		//		System.out.println(" id is "+id+"\n name is "+name+"\n price is "+price+"\n deadline is "+deadline);
 				View contentView = inflater.inflate(R.layout.detect_goods, null);
 				TextView good_name = (TextView)contentView.findViewById(R.id.dete_good_name);
 				TextView good_number = (TextView)contentView.findViewById(R.id.dete_good_number);
@@ -113,7 +115,7 @@ public class ReadAndWriteTextRecord {
 				TextView good_time = (TextView)contentView.findViewById(R.id.dete_good_time);
 				ImageView good_icon = (ImageView)contentView.findViewById(R.id.detect_good_pic);
 				String filepath = activity.getFilesDir()+"/GoodIcon/"+id;
-				System.out.println("file path is "+ filepath);
+		//		System.out.println("file path is "+ filepath);
 				File file = new File(filepath);
 				Bitmap goodicon;
 				if(file.exists()){
@@ -124,6 +126,8 @@ public class ReadAndWriteTextRecord {
 				good_icon.setImageBitmap(goodicon);
 				good_name.setText(name);
 				good_number.setText("1");
+//				good_number.getId();
+				System.out.println("id is "+good_number.getId());
 				good_price.setText("价格："+price);
 				  //Date或者String转化为时间戳
 			    SimpleDateFormat format =  new SimpleDateFormat("yyyy/MM/dd");
@@ -132,7 +136,7 @@ public class ReadAndWriteTextRecord {
 					date = format.parse(deadline);
 					long till_time = date.getTime();
 					long current_time = System.currentTimeMillis();
-					System.out.print("Format To times:"+date.getTime());
+		//			System.out.print("Format To times:"+date.getTime());
 					if(current_time>till_time){
 						deadline="这个商品已经过期!";
 						good_time.setText(deadline);
@@ -143,6 +147,9 @@ public class ReadAndWriteTextRecord {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				//写入数据库
+				database.RecordGood(good);
 				return contentView;
 			}
 			

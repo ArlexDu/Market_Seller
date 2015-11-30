@@ -1,15 +1,12 @@
 package edu.happy.supermarket;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -17,6 +14,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,16 +28,17 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.happy.tools.DataBaseControl;
-import edu.happy.tools.FileTools;
 import edu.happy.tools.ParseNdefMessage;
 import edu.happy.tools.ReadAndWriteTextRecord;
 
 public class RunWindow extends Activity {
 	
-	private ImageView select,cancel,overview,add,black; //用于选择的按钮
+	private ImageView select,cancel,overview,add,black,price,done; //用于选择的按钮
+	private RelativeLayout dialog;
 	private ImageView notice;
 	private String mdata;//存储程序包的名字
 	private NfcAdapter mNfcAdapter;
@@ -51,8 +50,9 @@ public class RunWindow extends Activity {
 	private ProgressBar bar;
 	private LayoutInflater inflater;
 	private View show_info;
-	private TextView show_title;
+	private TextView show_title,count,money;
 	private String id,name; //用于记录写入操作返回的id和name
+	private DataBaseControl database = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -70,6 +70,11 @@ public class RunWindow extends Activity {
 		info_layout = (LinearLayout)findViewById(R.id.show_infor);
 		bar = (ProgressBar)findViewById(R.id.progressBar);
 		show_title = (TextView) findViewById(R.id.show_title);
+		done = (ImageView)findViewById(R.id.done_button);
+		price = (ImageView)findViewById(R.id.price_button);
+		dialog = (RelativeLayout)findViewById(R.id.dialog);
+		count = (TextView)findViewById(R.id.dialog_count);
+		money = (TextView)findViewById(R.id.dialog_price);
 		inflater = LayoutInflater.from(this);
 	    mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
 
@@ -139,6 +144,32 @@ public class RunWindow extends Activity {
 			intent = new Intent(RunWindow.this,WriteActivity.class);
 			startActivityForResult(intent, 1);
 			initanim();
+			break;
+//			开始结算
+		case R.id.price_button:
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					Message msg = Message.obtain();
+					msg.what = 1;
+					// 发送这个消息到消息队列中
+					myHander.sendMessage(msg);
+				}
+			}).start();
+			break;
+//			结算完成
+		case R.id.done_button:
+			show_title.setVisibility(View.INVISIBLE);
+			info_layout.removeAllViews();
+			notice.setVisibility(View.VISIBLE);
+			database.Update_Detail_Data();
+			database.Update_Whole_Data();
+			dialog.setVisibility(View.INVISIBLE);
+			database = null;
+			select.setVisibility(View.VISIBLE);
+			done.setVisibility(View.INVISIBLE);
 			break;
 		}
 		
@@ -298,7 +329,16 @@ public class RunWindow extends Activity {
 	}
 	private void readNfc(Tag tag,Intent intent){
 		//判断是否是由读nfc标签打开的窗口
-		//System.out.println("当前的格式是："+intent.getAction());
+		//把多选的按钮隐藏掉
+		if(select.getVisibility()==View.VISIBLE){
+			select.setVisibility(View.INVISIBLE);
+			cancel.setVisibility(View.INVISIBLE);
+			price.setVisibility(View.VISIBLE);
+		}
+		//保证一次结算过程中使用同一个database库
+		    if(database == null){
+		    	database = new DataBaseControl(this);
+		    }
             if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
             //	System.out.println("进入判断");
             	Ndef ndef = Ndef.get(tag);
@@ -329,9 +369,9 @@ public class RunWindow extends Activity {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									ParseNdefMessage message = textRecord.getInformation();
+									ParseNdefMessage message = textRecord.getInformation(database);
 //									System.out.println("获得新的组件！");
-									show_info = message.getView(RunWindow.this, inflater, info_layout, 0);
+									show_info = message.getView(RunWindow.this, inflater, info_layout, 0,database);
 									Message msg = Message.obtain();
 									msg.what = 0;
 									// 发送这个消息到消息队列中
@@ -418,7 +458,18 @@ public class RunWindow extends Activity {
 				bar.setVisibility(View.INVISIBLE);
 				notice.setVisibility(View.INVISIBLE);
 				show_title.setVisibility(View.VISIBLE);
-				info_layout.addView(show_info);
+			    info_layout.addView(show_info);	
+			}
+			if(msg.what == 1){
+				price.setVisibility(View.INVISIBLE);
+				done.setVisibility(View.VISIBLE);
+				String c = database.getcount()+"";
+				System.out.println("count is "+c);
+				count.setText(c);
+				String s= database.getprice()+"";
+				System.out.println("price is "+s);
+				money.setText(s);
+				dialog.setVisibility(View.VISIBLE);
 			}
 			
 		};
