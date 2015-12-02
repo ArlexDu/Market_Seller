@@ -110,7 +110,7 @@ public class ReadAndWriteTextRecord {
 		//		System.out.println(" id is "+id+"\n name is "+name+"\n price is "+price+"\n deadline is "+deadline);
 				View contentView = inflater.inflate(R.layout.detect_goods, null);
 				TextView good_name = (TextView)contentView.findViewById(R.id.dete_good_name);
-				TextView good_number = (TextView)contentView.findViewById(R.id.dete_good_number);
+//				TextView good_number = (TextView)contentView.findViewById(R.id.dete_good_number);
 				TextView good_price = (TextView)contentView.findViewById(R.id.dete_good_price);
 				TextView good_time = (TextView)contentView.findViewById(R.id.dete_good_time);
 				ImageView good_icon = (ImageView)contentView.findViewById(R.id.detect_good_pic);
@@ -125,10 +125,10 @@ public class ReadAndWriteTextRecord {
 				}
 				good_icon.setImageBitmap(goodicon);
 				good_name.setText(name);
-				good_number.setText("1");
+//				good_number.setText("1");
 //				good_number.getId();
-				System.out.println("id is "+good_number.getId());
-				good_price.setText("价格："+price);
+//				System.out.println("id is "+good_number.getId());
+				good_price.setText(price+"元");
 				  //Date或者String转化为时间戳
 			    SimpleDateFormat format =  new SimpleDateFormat("yyyy/MM/dd");
 			    Date date;

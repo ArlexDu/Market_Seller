@@ -39,7 +39,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000002','Æ»¹û',0)");
         db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000003','¼¦µ°',0)");
         db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000004','¿É±È¿Ë',0)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('7733057006','µ¤ÂóÏã²ÝÍþ»¯±ý¸É',0)");
         //´æ´¢Í¼Æ¬
         downloadPic();
 	}

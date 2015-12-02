@@ -27,23 +27,12 @@
          />
 
     <TextView
-        android:id="@+id/dete_good_number"
+        android:id="@+id/dete_good_price"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignTop="@+id/detect_good_pic"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:gravity="center_vertical"
-        android:text="Number"
-         />
-    
-    <TextView
-        android:id="@+id/dete_good_price"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_alignBottom="@+id/detect_good_pic"
-        android:layout_toRightOf="@+id/detect_good_pic"
-        android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:text="价格："
          />
@@ -53,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignBottom="@+id/detect_good_pic"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/detect_good_pic"
+        android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:text="这个产品已经过期！"
          />
