@@ -34,13 +34,13 @@ public class DBHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
         db.execSQL(CREATE_Detail_DATABASE);
         db.execSQL(CREATE_Whole_DATABASE);
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000000','牛奶',0)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000001','沙琪玛',0)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000002','苹果',0)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000003','鸡蛋',0)");
-        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000004','可比克',0)");
+//        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000000','牛奶',0)");
+//        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000001','沙琪玛',0)");
+//        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000002','苹果',0)");
+//        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000003','鸡蛋',0)");
+//        db.execSQL("INSERT INTO Whole_info(id,name,number) values('1000000004','可比克',0)");
         //存储图片
-        downloadPic();
+//        downloadPic();
 	}
 	
     //数据库更新的时候使用

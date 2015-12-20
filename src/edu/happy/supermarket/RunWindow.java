@@ -2,6 +2,10 @@ package edu.happy.supermarket;
 
 import java.io.File;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -14,11 +18,11 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,7 +90,9 @@ public class RunWindow extends Activity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				netaccess.Volly_Get(myHander,2);
+				SharedPreferences preferences = getSharedPreferences("first", Activity.MODE_PRIVATE);
+				long updatetime = preferences.getLong("updatetime", 0);
+				netaccess.GetInfo(updatetime,myHander,2);
 			}
 		}).start();
 	    mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
@@ -102,7 +108,7 @@ public class RunWindow extends Activity {
 	
 	//仅第一次登陆才会打开数据库建立
 	private void firstuse(){
-		SharedPreferences preferences = getSharedPreferences("first", Activity.MODE_PRIVATE);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		int first = preferences.getInt("open", 0);
 		System.out.println("open ："+first);
 		//第一次登陆  
@@ -124,6 +130,7 @@ public class RunWindow extends Activity {
 		SharedPreferences.Editor editor = preferences.edit();
 		first++;
 		editor.putInt("open", first);
+		editor.putLong("updatetime", 0);
 		editor.commit();
 		
 	}
@@ -441,7 +448,7 @@ public class RunWindow extends Activity {
 					Toast.makeText(this, "这个NFC标签容量不够！", Toast.LENGTH_LONG).show();
 				}
 				ndef.writeNdefMessage(message);
-				data.add_Whole_Data(id,name);//添加到数据库
+				data.add_Whole_Data(id,name,0);//添加到数据库
 				data.CloseDataBase();
 				Toast.makeText(this, "成功写入！", Toast.LENGTH_LONG).show();
 			}else{//格式化标签变为ndef格式
@@ -451,7 +458,7 @@ public class RunWindow extends Activity {
 					format.connect();
 					//格式化的同时也完成了写入的操作
 					format.format(message);
-					data.add_Whole_Data(id,name);//添加到数据库
+					data.add_Whole_Data(id,name,0);//添加到数据库
 					data.CloseDataBase();
 					Toast.makeText(this, "成功写入！", Toast.LENGTH_LONG).show();	
 				}else{
@@ -488,13 +495,53 @@ public class RunWindow extends Activity {
 				money.setText(s);
 				dialog.setVisibility(View.VISIBLE);
 			    break;
-			case 2:
+			case 2://获得产品数据，更新数据库
 				System.out.println(msg.obj);
+				long lastupdate = 0;
+				try {
+					JSONArray array = new JSONArray(msg.obj.toString());
+					for(int i= 0 ; i< array.length() ; i++){
+						JSONObject good = (JSONObject) array.get(i);
+						final String id = good.getString("id");
+						String name = good.getString("name");
+						int number = good.getInt("number");
+						String updatetime = good.getString("updatetime");
+						lastupdate = Max(lastupdate,Long.parseLong(updatetime));
+						DataBaseControl data = new DataBaseControl(getApplicationContext());
+						data.add_Whole_Data(id,name,number);//添加到数据库
+						data.CloseDataBase();
+						new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								netaccess = new NetWorkAccess();
+								netaccess.loadImage(getApplicationContext(),id);
+							}
+						}).start();
+					}
+//			    System.out.println("lasttime is "+ lastupdate);
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());	
+				SharedPreferences.Editor editor = preferences.edit();
+				editor.putLong("updatetime",lastupdate);
+				editor.commit();
+//				long updatetime = preferences.getLong("updatetime", 0);
+//				 System.out.println("sp lasttime is "+ lastupdate);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 3://更新数据库的图片
+//				System.out.println("图片下载完成");
 				break;
 			}
 		};
 	};
 	
+	private long Max(long x,long y){
+		return x>y?x:y;
+	}
 	//重写返回键，避免返回空指针错误
 		@Override
 		public boolean onKeyDown(int keyCode, KeyEvent event) {

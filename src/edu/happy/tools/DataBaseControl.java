@@ -73,10 +73,10 @@ public class DataBaseControl {
 		}//不是本次结算新的的话就在结算结束后向已有的数据库条目中更新数量
 	}
 	
-	public void add_Whole_Data(String id,String name){
+	public void add_Whole_Data(String id,String name,int number){
 		database.beginTransaction();
 		try{
-			database.execSQL(INSERT_WHOLE,new Object[]{id,name,0});
+			database.execSQL(INSERT_WHOLE,new Object[]{id,name,number});
 			database.setTransactionSuccessful();
 		}catch(Exception e){
 			e.printStackTrace();
