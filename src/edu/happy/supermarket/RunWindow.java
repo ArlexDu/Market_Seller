@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.happy.tools.DataBaseControl;
+import edu.happy.tools.NetWorkAccess;
 import edu.happy.tools.ParseNdefMessage;
 import edu.happy.tools.ReadAndWriteTextRecord;
 
@@ -54,6 +55,7 @@ public class RunWindow extends Activity {
 	private TextView show_title,count,money;
 	private String id,name; //用于记录写入操作返回的id和name
 	private DataBaseControl database = null;
+	private NetWorkAccess netaccess;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -77,6 +79,16 @@ public class RunWindow extends Activity {
 		count = (TextView)findViewById(R.id.dialog_count);
 		money = (TextView)findViewById(R.id.dialog_price);
 		inflater = LayoutInflater.from(this);
+		//第一次登陆不断的比对更新最新的信息
+		netaccess = new NetWorkAccess();
+ 		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				netaccess.Volly_Get(myHander,2);
+			}
+		}).start();
 	    mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
 
 	        //没有nfc硬件服务
@@ -458,13 +470,14 @@ public class RunWindow extends Activity {
     Handler myHander = new Handler(){
 		
 		public void handleMessage(Message msg) {
-			if(msg.what == 0){
+			switch(msg.what){
+			case 0:
 				bar.setVisibility(View.INVISIBLE);
 				notice.setVisibility(View.INVISIBLE);
 				show_title.setVisibility(View.VISIBLE);
 			    info_layout.addView(show_info);	
-			}
-			if(msg.what == 1){
+				break;
+			case 1:
 				price.setVisibility(View.INVISIBLE);
 				done.setVisibility(View.VISIBLE);
 				String c = database.getcount()+"";
@@ -474,8 +487,11 @@ public class RunWindow extends Activity {
 				System.out.println("price is "+s);
 				money.setText(s);
 				dialog.setVisibility(View.VISIBLE);
+			    break;
+			case 2:
+				System.out.println(msg.obj);
+				break;
 			}
-			
 		};
 	};
 	
