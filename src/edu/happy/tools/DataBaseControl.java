@@ -10,10 +10,6 @@ import java.util.Map;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import edu.happy.supermarket.R;
 
 public class DataBaseControl {
 	
@@ -98,10 +94,16 @@ public class DataBaseControl {
 		
 	}
 	//结算结束后更新细节表
-	public void Update_Detail_Data(){
-		
+	public List<Map<String, String>> Update_Detail_Data(){
+		List<Map<String, String>> list = new ArrayList<Map<String,String>>();
 		for(int i = 0;i<goodslist.size();i++){
 			Buygoods bg = goodslist.get(i);
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("id", bg.id);
+			map.put("number", String.valueOf(bg.number));
+			map.put("price", String.valueOf(bg.price));
+			map.put("time", String.valueOf(time));
+			list.add(map);
 			database.beginTransaction();
 			try{
 				database.execSQL("update Detail_info set number = '"+bg.number+"' where id = '"+bg.id+"' and time= '"+time+"'");
@@ -112,6 +114,7 @@ public class DataBaseControl {
 	            database.endTransaction();			
 			}	
 		}
+		return list;
 	}
 	
 	//更新总表

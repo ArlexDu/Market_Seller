@@ -1,11 +1,27 @@
 package edu.happy.supermarket;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.DefaultClientConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.string;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -23,10 +39,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -90,9 +108,13 @@ public class RunWindow extends Activity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				SharedPreferences preferences = getSharedPreferences("first", Activity.MODE_PRIVATE);
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());	
 				long updatetime = preferences.getLong("updatetime", 0);
-				netaccess.GetInfo(updatetime,myHander,2);
+				Map<String, String> map = new HashMap<String, String>();
+				Log.i("updatetime is ", String.valueOf(updatetime));
+				map.put("updatetime", String.valueOf(updatetime));
+				String url = "/android/updateinfo";
+				netaccess.ChangeInfo(url,myHander,2,map);
 			}
 		}).start();
 	    mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
@@ -130,7 +152,6 @@ public class RunWindow extends Activity {
 		SharedPreferences.Editor editor = preferences.edit();
 		first++;
 		editor.putInt("open", first);
-		editor.putLong("updatetime", 0);
 		editor.commit();
 		
 	}
@@ -187,7 +208,15 @@ public class RunWindow extends Activity {
 			show_title.setVisibility(View.INVISIBLE);
 			info_layout.removeAllViews();
 			notice.setVisibility(View.VISIBLE);
-			database.Update_Detail_Data();
+			//上传远程数据库
+			new Thread(new  Runnable() {
+				public void run() {
+					List<Map<String, String>> postlist = database.Update_Detail_Data();
+					Map<String, String> map = new HashMap<String, String>();
+					map.put("info", String.valueOf(new JSONArray(postlist)));
+					new NetWorkAccess().ChangeInfo("/android/loadupdetail",myHander, 3, map);
+				}
+			}).start();
 			database.Update_Whole_Data();
 			dialog.setVisibility(View.INVISIBLE);
 			database = null;
@@ -343,11 +372,13 @@ public class RunWindow extends Activity {
 	protected void onNewIntent(Intent intent) {
 		// TODO Auto-generated method stub
 		Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-		if(mdata == null){//读标签
-		//	System.out.println("读标签");
-            readNfc(detectedTag,intent);          
-		}else{//写标签
-			writeNfcTag(detectedTag);	
+		if(detectedTag!=null){//避免home键带来的崩溃问题
+			if(mdata == null){//读标签
+				//	System.out.println("读标签");
+		            readNfc(detectedTag,intent);          
+				}else{//写标签
+					writeNfcTag(detectedTag);	
+				}	
 		}
 	}
 	private void readNfc(Tag tag,Intent intent){
@@ -460,7 +491,36 @@ public class RunWindow extends Activity {
 					format.format(message);
 					data.add_Whole_Data(id,name,0);//添加到数据库
 					data.CloseDataBase();
-					Toast.makeText(this, "成功写入！", Toast.LENGTH_LONG).show();	
+					Toast.makeText(this, "成功写入！", Toast.LENGTH_LONG).show();
+					//上传到数据库
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+							String base_url = NetWorkAccess.base_url;
+							HttpPost httprequest = new HttpPost(base_url+"/android/add");
+							MultipartEntity entity = new MultipartEntity();
+							entity.addPart("info",new StringBody(mdata));
+							File Pic = new File(getApplication().getFilesDir()+"/GoodIcon/",id);
+							entity.addPart("pic",new FileBody(Pic));
+							httprequest.setEntity(entity);
+							HttpResponse response;
+							response = new DefaultHttpClient().execute(httprequest);
+							if(response.getStatusLine().getStatusCode() == 200){
+									Log.d("httpresponse", "200");
+									Message message = new Message();
+									message.what = 4;
+									myHander.sendMessage(message);
+								}
+							} catch (ClientProtocolException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+					}).start();
 				}else{
 					Toast.makeText(this, "该标签无法格式化为ndef格式！", Toast.LENGTH_LONG).show();	
 				}
@@ -478,7 +538,7 @@ public class RunWindow extends Activity {
 		
 		public void handleMessage(Message msg) {
 			switch(msg.what){
-			case 0:
+			case 0://nfc识别出商品的信息
 				bar.setVisibility(View.INVISIBLE);
 				notice.setVisibility(View.INVISIBLE);
 				show_title.setVisibility(View.VISIBLE);
@@ -488,10 +548,10 @@ public class RunWindow extends Activity {
 				price.setVisibility(View.INVISIBLE);
 				done.setVisibility(View.VISIBLE);
 				String c = database.getcount()+"";
-				System.out.println("count is "+c);
+//				System.out.println("count is "+c);
 				count.setText(c);
 				String s= database.getprice()+"";
-				System.out.println("price is "+s);
+//				System.out.println("price is "+s);
 				money.setText(s);
 				dialog.setVisibility(View.VISIBLE);
 			    break;
@@ -503,6 +563,7 @@ public class RunWindow extends Activity {
 					for(int i= 0 ; i< array.length() ; i++){
 						JSONObject good = (JSONObject) array.get(i);
 						final String id = good.getString("id");
+						final String pic = good.getString("pic");
 						String name = good.getString("name");
 						int number = good.getInt("number");
 						String updatetime = good.getString("updatetime");
@@ -516,7 +577,7 @@ public class RunWindow extends Activity {
 							public void run() {
 								// TODO Auto-generated method stub
 								netaccess = new NetWorkAccess();
-								netaccess.loadImage(getApplicationContext(),id);
+								netaccess.loadImage(getApplicationContext(),id,pic);
 							}
 						}).start();
 					}
@@ -533,7 +594,21 @@ public class RunWindow extends Activity {
 				}
 				break;
 			case 3://更新数据库的图片
-//				System.out.println("图片下载完成");
+				try {
+					JSONObject obj = new JSONObject(msg.obj.toString());
+					int status= obj.getInt("success");
+					if(status == 5){
+						System.out.println("上传成功！");
+					}else{
+						System.out.println("上传失败！");
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				System.out.println("上传成功");
 				break;
 			}
 		};
@@ -542,16 +617,5 @@ public class RunWindow extends Activity {
 	private long Max(long x,long y){
 		return x>y?x:y;
 	}
-	//重写返回键，避免返回空指针错误
-		@Override
-		public boolean onKeyDown(int keyCode, KeyEvent event) {
-			// TODO Auto-generated method stub
-			if(keyCode == KeyEvent.KEYCODE_HOME){
-				keyCode = KeyEvent.KEYCODE_BACK;
-				return super.onKeyDown(keyCode, event);	
-			}else{
-				return super.onKeyDown(keyCode, event);	
-			}
-		}
+	
 }
-
