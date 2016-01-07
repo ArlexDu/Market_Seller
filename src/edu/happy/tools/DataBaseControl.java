@@ -102,7 +102,7 @@ public class DataBaseControl {
 			map.put("id", bg.id);
 			map.put("number", String.valueOf(bg.number));
 			map.put("price", String.valueOf(bg.price));
-			map.put("time", String.valueOf(time));
+			map.put("time", String.valueOf(time/1000));
 			list.add(map);
 			database.beginTransaction();
 			try{
