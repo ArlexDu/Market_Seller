@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	//whole表记录商品的具体信息:商品 id , 名称，价格，总数量
 	private static String CREATE_Whole_DATABASE = "CREATE TABLE IF NOT EXISTS Whole_info"
-			+ "(id varchar(10) PRIMARY KEY,name VARCHAR(100),number INTEGER)";
+			+ "(id varchar(10) PRIMARY KEY,name VARCHAR(100),number INTEGER,price varchar(20))";
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null,1);
 		this.context = context;

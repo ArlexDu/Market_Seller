@@ -1,6 +1,7 @@
 package edu.happy.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,6 +9,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -105,6 +114,15 @@ public class ReadAndWriteTextRecord {
 				name = info.substring(indexs[0]+1,indexs[1]);
 				deadline = info.substring(indexs[3]+1, indexs[4]);
 				price = info.substring(indexs[5]+1,indexs[6]);
+				try {
+					price = getPrice(id);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+				//获得即时的价格
+				
+				
 				good.setId(id);
 				good.setPrice(price);
 		//		System.out.println(" id is "+id+"\n name is "+name+"\n price is "+price+"\n deadline is "+deadline);
@@ -156,6 +174,22 @@ public class ReadAndWriteTextRecord {
 		};
 		
 		return message;
+	}
+	
+	//获得最新的价格
+	private String getPrice(String id) throws ClientProtocolException, IOException, JSONException{
+		 String url = "http://10.60.42.70:3000/Android/price/"+id;
+		 HttpResponse httpResponse = null;
+		 HttpGet httpget = new HttpGet(url);
+		 httpResponse = new DefaultHttpClient().execute(httpget);
+		 String price=null;
+		 String result=null;
+		 if(httpResponse.getStatusLine().getStatusCode() == 200){
+			 result =  EntityUtils.toString(httpResponse.getEntity());
+			 JSONObject object = new JSONObject(result);
+			 price = object.getString("price");
+		 }
+		 return price;
 	}
 	/*
 	 * 向nfc标签中写入信息
